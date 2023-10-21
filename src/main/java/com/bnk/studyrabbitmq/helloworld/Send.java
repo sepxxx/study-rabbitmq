@@ -18,7 +18,7 @@ public class Send {
         Channel channel = connection.createChannel()) {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             String message = "hello world!";
-            channel.basicPublish("",QUEUE_NAME, null,message.getBytes(StandardCharsets.UTF_8));
+            channel.basicPublish("", QUEUE_NAME, null,message.getBytes(StandardCharsets.UTF_8));
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);
         }
