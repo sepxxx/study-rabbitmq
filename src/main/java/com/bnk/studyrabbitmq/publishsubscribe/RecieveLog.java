@@ -10,7 +10,7 @@ import java.util.concurrent.TimeoutException;
 
 public class RecieveLog {
 
-    private static final String EXCHANGE_NAME = "logs";
+    private static final String EXCHANGE_NAME = "direct_logs";
     public static void main(String[] args) {
         ConnectionFactory  connectionFactory = new ConnectionFactory();
         connectionFactory.setHost("localhost");
@@ -19,7 +19,10 @@ public class RecieveLog {
             Channel channel = connection.createChannel();
 
             String queueName = channel.queueDeclare().getQueue();
-            channel.queueBind(queueName, EXCHANGE_NAME, "");
+            String[] severities = {"info", "error", "warning"};
+            for(String severity: severities) {
+                channel.queueBind(queueName, EXCHANGE_NAME, severity);
+            }
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {

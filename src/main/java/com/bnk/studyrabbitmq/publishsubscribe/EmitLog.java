@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class EmitLog {
-    private static final String EXCHANGE_NAME = "logs";
+    private static final String EXCHANGE_NAME = "direct_logs";
 
     public static void main(String[] args) {
         ConnectionFactory connectionFactory  = new ConnectionFactory();
@@ -16,10 +16,11 @@ public class EmitLog {
 
         try(Connection connection = connectionFactory.newConnection();
             Channel channel = connection.createChannel();) {
-            channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+            channel.exchangeDeclare(EXCHANGE_NAME, "direct");
 
             String message = "info: Hello world!";
-            channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes("UTF-8"));
+            String severirty = "info";
+            channel.basicPublish(EXCHANGE_NAME, severirty, null, message.getBytes("UTF-8"));
             System.out.println(" [x] Sent '" + message + "'");
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);
