@@ -9,19 +9,19 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 public class NewTask {
-    private static final String TASK_QUEUE_NAME = "task_queue";
+    private static final String TASK_QUEUE_NAME = "task_queue2";
 
     public static void main(String[] args) {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            channel.queueDeclare(TASK_QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(TASK_QUEUE_NAME, true, false, false, null);
 
 
 //            String message = String.join(" ", args);
             String message = "hello.......";
-            channel.basicPublish("", TASK_QUEUE_NAME, null, message.getBytes());
+            channel.basicPublish("", TASK_QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);

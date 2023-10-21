@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeoutException;
 
 public class Worker {
-    private final static String QUEUE_NAME="task_queue";
+    private final static String QUEUE_NAME="task_queue2";
 
     public static void main(String[] args) {
         ConnectionFactory connectionFactory = new ConnectionFactory();
@@ -18,7 +18,7 @@ public class Worker {
         try {
             Connection connection = connectionFactory.newConnection();
             Channel channel = connection.createChannel();
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, true, false, false, null);
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
 
