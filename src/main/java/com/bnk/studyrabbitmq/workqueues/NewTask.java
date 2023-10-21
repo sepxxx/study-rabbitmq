@@ -20,7 +20,7 @@ public class NewTask {
 
 
 //            String message = String.join(" ", args);
-            String message = "hello..";
+            String message = "hello.......";
             channel.basicPublish("", TASK_QUEUE_NAME, null, message.getBytes());
             System.out.println(" [x] Sent '" + message + "'");
         } catch (IOException | TimeoutException e) {

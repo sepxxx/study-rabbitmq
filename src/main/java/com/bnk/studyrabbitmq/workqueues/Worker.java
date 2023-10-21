@@ -21,6 +21,8 @@ public class Worker {
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
 
+
+            channel.basicQos(1);
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), "UTF-8");
                 System.out.println(" [x] Received '"+message+"'");
@@ -31,9 +33,10 @@ public class Worker {
                     throw new RuntimeException(e);
                 } finally {
                     System.out.println(" [x] Done");
+                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(),false);
                 }
             };
-            channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});
+            channel.basicConsume(QUEUE_NAME, false, deliverCallback, consumerTag -> {});
         } catch (IOException | TimeoutException e) {
             throw new RuntimeException(e);
         }
